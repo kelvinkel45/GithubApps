@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">GithubApps</string>
+    <string name="image_avatar">image avatar</string>
+    <string name="searchbar_hint">Masukkan Username…</string>
+    <string name="following_text">Following</string>
+    <string name="follower_text">Follower</string>
+    <string name="tabs_layout">tabs layout</string>
+    <string name="text_empty">No Data Found</string>
+    <string name="text_error">Something Wrong, Please Try Again!</string>
+</resources>

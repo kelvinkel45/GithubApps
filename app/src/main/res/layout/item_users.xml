@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_avatar"
+            android:layout_width="75dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintDimensionRatio="2:3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorBgItem"
+                android:contentDescription="@string/image_avatar"/>
+
+        </androidx.cardview.widget.CardView>
+        
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cv_avatar"
+            app:layout_constraintTop_toTopOf="parent"/>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+</androidx.cardview.widget.CardView>
