@@ -8,21 +8,21 @@ import android.view.View.GONE
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.githubapps.R
 import com.example.githubapps.util.Resource
 import com.example.githubapps.ui.adapter.SectionPagerAdapter
 import com.example.githubapps.data.response.DetailUserResponse
 import com.example.githubapps.databinding.FragmentDetailUserBinding
+import com.example.githubapps.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailUserFragment : Fragment() {
 
     private var _binding : FragmentDetailUserBinding? = null
     private val binding get() = _binding!!
-
-    private val viewModel by viewModels<DetailViewModel>()
+    private lateinit var detailViewModel: DetailViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,8 +37,9 @@ class DetailUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val user = DetailUserFragmentArgs.fromBundle(arguments as Bundle).user
-        viewModel.getDetailUser(user?.username ?: "")
-        viewModel.detailUser.observe(viewLifecycleOwner){
+//        viewModel.getDetailUser(user?.username ?: "")
+        initViewModel()
+        detailViewModel.getDetailUser(user?.username.toString()).observe(viewLifecycleOwner){
             when (it){
                 is Resource.Success -> {
                     setDetailUser(it.data)
@@ -60,6 +61,11 @@ class DetailUserFragment : Fragment() {
         }.attach()
 
 
+    }
+
+    private fun initViewModel(){
+        val factory = ViewModelFactory.getInstance()
+        detailViewModel = ViewModelProvider(requireActivity(), factory)[DetailViewModel::class.java]
     }
 
     private fun onSuccess(){

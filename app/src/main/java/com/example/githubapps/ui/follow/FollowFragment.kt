@@ -8,19 +8,20 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapps.util.Resource
 import com.example.githubapps.ui.adapter.UserAdapter
 import com.example.githubapps.data.response.UserResponse
 import com.example.githubapps.databinding.FragmentFollowBinding
+import com.example.githubapps.util.ViewModelFactory
 
 class FollowFragment : Fragment() {
 
     private var _binding : FragmentFollowBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<FollowViewModel>()
+    private lateinit var viewModel: FollowViewModel
     private var adapter: UserAdapter? = null
 
     companion object{
@@ -40,6 +41,7 @@ class FollowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViewModel()
         val position = arguments?.getInt(TAB_POSITION)
         arguments?.getString(DATA_USERNAME)?.let {
             viewModel.setUsername(it)
@@ -48,7 +50,7 @@ class FollowFragment : Fragment() {
         setUpRecyclerView()
 
         position?.let { viewModel.setPosition(it) }
-        viewModel.listFollow.observe(viewLifecycleOwner){
+        viewModel.getListFollowData().observe(viewLifecycleOwner){
             when(it){
                 is Resource.Success ->{
                     adapter?.submitList(it.data)
@@ -64,7 +66,11 @@ class FollowFragment : Fragment() {
                 }
             }
         }
-        viewModel.getListFollow()
+    }
+
+    private fun initViewModel(){
+        val factory = ViewModelFactory.getInstance()
+        viewModel = ViewModelProvider(requireActivity(), factory)[FollowViewModel::class.java]
     }
 
     override fun onDestroy() {

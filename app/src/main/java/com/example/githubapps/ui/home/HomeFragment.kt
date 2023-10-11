@@ -7,13 +7,14 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapps.util.Resource
 import com.example.githubapps.ui.adapter.UserAdapter
 import com.example.githubapps.data.response.UserResponse
 import com.example.githubapps.databinding.FragmentHomeBinding
+import com.example.githubapps.util.ViewModelFactory
 
 class HomeFragment : Fragment() {
 
@@ -21,7 +22,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var adapter: UserAdapter? = null
-    private val homeViewModel by viewModels<HomeViewModel>()
+    private lateinit var homeViewModel : HomeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,12 +36,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViewModel()
         setUpRecyclerView()
         setSearchView()
+        initObserver()
+    }
 
+    private fun initObserver() {
         homeViewModel.listUser.observe(viewLifecycleOwner){
             when(it){
-                is Resource.Success -> {
+                is Resource.Success ->{
                     adapter?.submitList(it.data)
                     onSuccess()
                 }
@@ -49,6 +54,11 @@ class HomeFragment : Fragment() {
                 is Resource.Empty -> onEmpty()
             }
         }
+    }
+
+    private fun initViewModel(){
+        val factory = ViewModelFactory.getInstance()
+        homeViewModel = ViewModelProvider(requireActivity(), factory)[HomeViewModel::class.java]
     }
 
     private fun setUpRecyclerView(){
@@ -67,7 +77,7 @@ class HomeFragment : Fragment() {
                 .setOnEditorActionListener{ _, _, _ ->
                     searchBar.text = searchView.text
                     searchView.hide()
-                    homeViewModel.getListUser(searchView.text.toString())
+                    homeViewModel.getListUsers(searchView.text.toString())
                     false
                 }
         }

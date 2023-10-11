@@ -13,15 +13,10 @@ class SectionPagerAdapter (fragment : Fragment) : FragmentStateAdapter (fragment
 
     override fun createFragment(position: Int): Fragment {
         val fragment = FollowFragment()
-//        val followerFragment = FollowFragment()
         fragment.arguments = Bundle().apply {
             putInt(TAB_POSITION, position + 1)
             putString(DATA_USERNAME, userName)
         }
-//        followerFragment.arguments = Bundle().apply {
-//            putInt(TAB_POSITION, 1)//position +1
-//            putString(DATA_USERNAME, userName)
-//        }
         return fragment //if(position == 0 ) fragment else followerFragment
     }
 }
